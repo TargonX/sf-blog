@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Artykuł{% endblock %}
+
+{% block body %}
+
+<h1> {{ post.title }}</h1>
+
+<p>{{ post.lead }}</p>
+<p>{{ post.content }}</p>
+
+<p class="text-end">Dodano: {{ post.createdAt|date("H:i d/m/Y") }}</p>
+
+<hr>
+
+<h3>Komentarze</h3>
+
+{{ form_start(form )}}
+
+{{ form_widget(form)}}
+
+<button class="btn btn-primary float-end" type="submit">Dodaj komentarz</button>
+
+{{ form_end(form)}}
+
+<div class="col-6">
+{% for comment in post.comments %}
+
+    <div class="card my-2 p-2">
+        <p>{{ comment.content }}</p>
+        <p class="text-end text-muted">Dodano: {{ comment.createdAt|date("H:i d/m/Y") }}</p> 
+    
+    </div>
+    
+{% endfor %}
+
+<div>
+
+
+
+{% endblock %}

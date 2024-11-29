@@ -9,6 +9,7 @@
         "ext-iconv": "*",
         "doctrine/doctrine-migrations-bundle": "^3.3",
         "easycorp/easyadmin-bundle": "^4.15",
+        "fakerphp/faker": "^1.5",
         "fzaninotto/faker": "^1.5",
         "knplabs/knp-paginator-bundle": "^6.6",
         "symfony/console": "7.1.*",

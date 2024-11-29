@@ -23,8 +23,16 @@ class Comment
     #[ORM\ManyToOne(targetEntity: 'Post', inversedBy:'comments')]
     private $post;
 
-    #[ORM\ManyToOne(targetEntity: "User", inversedBy: 'comments')]
+
+    #[ORM\ManyToOne(targetEntity: "User", inversedBy: 'comments',)]
+    #[ORM\JoinColumn(name:"user_id", nullable: true)]
     private $user; 
+
+
+    // SET DATE WHEN CREATE COMMENT
+    public function __construct() {
+        $this->created_at = new \DateTime('now');
+    }
 
     public function getId(): ?int
     {
@@ -51,6 +59,30 @@ class Comment
     public function setCreatedAt(\DateTimeInterface $created_at): static
     {
         $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    public function getPost(): ?Post
+    {
+        return $this->post;
+    }
+
+    public function setPost(?Post $post): static
+    {
+        $this->post = $post;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }
