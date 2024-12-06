@@ -28,12 +28,14 @@ class Post
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $created_at = null;
 
-    #[ORM\OneToMany(targetEntity: 'Comment', mappedBy: "post")]
+    #[ORM\OneToMany(targetEntity: 'Comment', mappedBy: "post", cascade: ['remove'])]
+
     private $comments;
 
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->created_at = new \DateTime('now');
     }
 
 
@@ -41,6 +43,14 @@ class Post
     {
         return $this->id;
     }
+
+    public function setId(string $id): ?int
+    {
+        return $this->id;
+
+    
+    }
+
 
     public function getTitle(): ?string
     {

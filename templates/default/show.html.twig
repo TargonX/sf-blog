@@ -7,13 +7,15 @@
 <h1> {{ post.title }}</h1>
 
 <p>{{ post.lead }}</p>
-<p>{{ post.content }}</p>
+<p>{{ post.content|raw }}</p>
 
 <p class="text-end">Dodano: {{ post.createdAt|date("H:i d/m/Y") }}</p>
 
 <hr>
 
 <h3>Komentarze</h3>
+
+{% if app.user %}
 
 {{ form_start(form )}}
 
@@ -23,12 +25,22 @@
 
 {{ form_end(form)}}
 
+{% else %}
+    
+    <p>Dodawanie komentarzy tylko dla zalogownych użytkowników. <a href="{{ path('app_login') }}">Zaloguj się</a></p>
+
+{% endif %}
+
+
+
 <div class="col-6">
 {% for comment in post.comments %}
 
     <div class="card my-2 p-2">
         <p>{{ comment.content }}</p>
-        <p class="text-end text-muted">Dodano: {{ comment.createdAt|date("H:i d/m/Y") }}</p> 
+        <p class="text-end text-muted">Dodano: {{ comment.createdAt|date("H:i d/m/Y") }} przez: {% if comment.user %} {{ comment.user.email }}{% endif %} </p> 
+        
+        
     
     </div>
     

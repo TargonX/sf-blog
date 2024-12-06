@@ -13,6 +13,14 @@
     </head>
     <body>
         <div class="container">
+            {% if app.user %}
+                <p  class="text-end">Zalogowany: {{ app.user.email }} {% if is_granted("ROLE_ADMIN") %} | <a href="{{ path('admin') }}"> Panel Admina</a>  {% endif %} | <a href="{{ path('app_logout') }}">Wyloguj</a></p>
+            {% else %}
+                <p class="text-end"><a  href="{{ path('app_login') }}">Zaloguj się</a></p>
+            {% endif %}
+
+          
+
             {% block body %}{% endblock %}
         </div>
         

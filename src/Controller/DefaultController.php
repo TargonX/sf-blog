@@ -26,6 +26,7 @@ class DefaultController extends AbstractController
         $posts = $em->createQueryBuilder()
         ->select('P')
         ->from(Post::class, 'P')
+        ->orderBy('P.created_at', 'DESC')
         ->getQuery()
         ->getResult();
      
@@ -42,32 +43,38 @@ class DefaultController extends AbstractController
     #[Route("/atrykul/{id}", name: "post_show" )]
     public function show(Post $post,EntityManagerInterface $em, Request $request) {
 
-        //Create new comment object
-        $comment = new Comment();
-        //Add comment to post
-        $comment->setPost($post);
+        $form = null;
 
-        //Add comment to user
-        //$comment->setUser($user)
+        //Add comment to user if user is logged
+        if($user = $this->getUser()) {
+            //Create new comment object
+            $comment = new Comment();
+            //Add comment to post
+            $comment->setPost($post);
+            $comment->setUser($user);
 
-        // Create comment form
-        $form = $this->createForm(CommentType::class, $comment);
+            // Create comment form
+            $form = $this->createForm(CommentType::class, $comment);
 
 
-        $form->handleRequest($request);
+            $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
-            $em->persist($comment);
-            $em->flush();
+            if($form->isSubmitted() && $form->isValid()) {
+                $em->persist($comment);
+                $em->flush();
 
-            $this->addFlash('success', "Komentarz został dodany.");
+                $this->addFlash('success', "Komentarz został dodany.");
 
             return $this->redirectToRoute('post_show', ['id' => $post->getId()]);
         }
+        }
+        
+
+  
 
         return $this->render('default/show.html.twig', [
             'post' => $post,
-            'form' => $form->createView()
+            'form' => is_null($form) ? $form : $form->createView()
         ]);
     }
 

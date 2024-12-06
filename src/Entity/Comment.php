@@ -33,8 +33,17 @@ class Comment
     public function __construct() {
         $this->created_at = new \DateTime('now');
     }
+    public function __toString()
+    {
+        return $this->content;
+    }
 
     public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function setId(int $id): ?int
     {
         return $this->id;
     }
